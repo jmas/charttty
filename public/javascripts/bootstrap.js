@@ -4,7 +4,7 @@
 
   var $ = window.jQuery;
   var pageName = location.hash.substring(1);
-  var giot = {};
+  var giot = { config: {} };
   var navbarEl = document.getElementById('navbar');
   var navbarUserEl = document.getElementById('nav-user');
   var navLogoutEl = document.getElementById('nav-logout');
@@ -104,6 +104,25 @@
     })();
   }
 
+  function loadConfig() {
+    return $.get('/config.json').then(function(config) {
+      giot.config = config;
+    });
+  }
+
+  function initTracker() {
+    if (! ('gaTrackerId' in giot.config)) {
+      return;
+    }
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', giot.config.gaTrackerId, 'auto');
+    ga('send', 'pageview');
+  }
+
   // execute
 
   $(navLogoutEl).on('click', function() {
@@ -132,18 +151,21 @@
   });
 
   initPage();
-  loadUser().then(function() {
-    loadFields().then(function(items) {
-      if (items.length === 0) {
-        showWelcome();
-        startWaitingForFields();
-        return;
-      }
-      renewData();
+  loadConfig().then(function() {
+    initTracker();
+    loadUser().then(function() {
+      loadFields().then(function(items) {
+        if (items.length === 0) {
+          showWelcome();
+          startWaitingForFields();
+          return;
+        }
+        renewData();
+      });
+    }).fail(function() {
+      delete window.localStorage.accessToken;
+      window.location.href = '/';
     });
-  }).fail(function() {
-    delete window.localStorage.accessToken;
-    window.location.href = '/';
   });
 
 })(this);
