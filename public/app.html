@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+    <title>WebApp - Charttty</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <style type="text/css">
+    #welcome-modal .modal-title {
+      text-align: center;
+    }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/app.html">Charttty WebApp</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#charts">Charts</a></li>
+            <li><a href="#data">Data</a></li>
+            <li><a href="https://github.com/jmas/iottty/wiki">Docs</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#profile">Signed in as <span id="nav-user"></span></a></li>
+            <li><a id="nav-logout" href="#">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="dashboard-container" class="container" data-page="charts">
+      <p><button type="button" class="btn btn-default" id="dashboard-add-chart">Add Chart</button></p>
+      <div id="dashboard-chart-list"></div>
+    </div>
+
+    <div id="data-container" class="container" data-page="data">
+      <div id="data-message" class="alert" role="alert"></div>
+      <div id="data-panel" class="panel panel-default">
+        <div class="panel-heading">
+          Data
+          <span class="pull-right">
+            <a href="#" data-edit title="Export"><i class="glyphicon glyphicon-export"></i></a>
+          </span>
+        </div>
+
+        <table class="table table-striped">
+          <thead id="data-table-head"></thead>
+          <tbody id="data-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="profile-container" class="container" data-page="profile">
+      <div class="panel panel-default">
+        <div class="panel-heading">Edit Profile</div>
+        <div class="panel-body">
+          <div id="profile-message" class="alert" role="alert"></div>
+          <form id="profile-form">
+            <div class="form-group">
+              <label for="profile-email">Email address</label>
+              <input id="profile-email" type="email" class="form-control" placeholder="Email" />
+            </div>
+            <div class="form-group">
+              <label for="profile-token">Private API Key</label>
+              <div class="input-group">
+                <input id="profile-apikey" type="text" class="form-control" disabled placeholder="API Key" />
+                <div class="input-group-btn">
+                  <button id="profile-update-apikey" type="button" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button id="profile-chpwd" type="button" class="btn btn-default">Change Password</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="chart-edit-modal" tabindex="-1" role="dialog" aria-labelledby="chart-edit-modal-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="chart-edit-modal-title"></h4>
+          </div>
+          <div class="modal-body">
+            <div id="chart-edit-message" class="alert alert-danger" role="alert"></div>
+            <form id="chart-edit-form">
+              <input id="chart-edit-id" type="hidden" />
+              <div class="form-group">
+                <label for="chart-edit-name">Name</label>
+                <input id="chart-edit-name" type="text" class="form-control" />
+              </div>
+              <h5>Data fields</h5>
+              <div id="chart-edit-modal-fields"></div>
+              <div id="chart-edit-modal-fields-message" class="alert alert-info"></div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <div class="pull-left">
+              <button id="chart-edit-remove" type="button" class="btn btn-danger" title="Remove"><span class="glyphicon glyphicon-minus-sign"></span></button>
+            </div>
+            <div class="pull-right">
+              <button id="chart-edit-save" type="button" class="btn btn-primary">Save</button>
+              <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="user-pwd-modal" tabindex="-1" role="dialog" aria-labelledby="user-pwd-modal-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Change Password</h4>
+          </div>
+          <div class="modal-body">
+            <div id="user-pwd-message" class="alert alert-danger" role="alert"></div>
+            <form id="user-pwd-form">
+              <input id="user-pwd-id" type="hidden" />
+              <div class="form-group">
+                <label for="user-pwd-current">Current Password</label>
+                <input id="user-pwd-current" type="password" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="user-pwd-new">New Password</label>
+                <input id="user-pwd-new" type="password" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="user-pwd-retype">New Password Retype</label>
+                <input id="user-pwd-retype" type="password" class="form-control" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="user-pwd-submit" type="button" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="welcome-modal" tabindex="-1" role="dialog" aria-labelledby="welcome-modal-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Welcome to Charttty</h4>
+          </div>
+          <div class="modal-body">
+            <p>For start wokring you need to send some data. Use follow URL to send data by HTTP GET request.</p>
+            <h5>URL</h5>
+            <p><code id="welcome-dataurl"></code></p>
+            <p>Where:</p>
+            <p><code id="welcome-apikey"></code> is your Private API Key.</p>
+            <p><code>fieldName</code> is name of field for identity what data we get.</p>
+            <p><code>value</code> is integer or float number, value of <code>fieldName</code>.</p>
+            <p>You can add one or more <code>fieldName=value</code> pairs separated by <code>&amp;</code>.</p>
+            <hr />
+            <p><b>We are waiting for data from you&hellip;</b></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script id="chart-item-tpl" type="template/text">
+      <div class="panel panel-default" data-chart>
+        <div class="panel-heading">
+          <span data-name></span>
+          <span class="pull-right">
+            <a href="#" data-edit title="Edit"><i class="glyphicon glyphicon-cog"></i></a>
+          </span>
+        </div>
+        <div data-chart style="position: relative;"></div>
+      </div>
+    </script>
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="javascripts/highcharts.js"></script>
+    <script src="javascripts/datalist.js"></script>
+    <script src="javascripts/pubsub.js"></script>
+    <script src="javascripts/pages/charts.js"></script>
+    <script src="javascripts/pages/data.js"></script>
+    <script src="javascripts/pages/profile.js"></script>
+    <script src="javascripts/bootstrap.js"></script>
+  </body>
+</html>

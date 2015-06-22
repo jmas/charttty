@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+    <title>Sign in to WebApp - Charttty</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+      }
+
+      .form-signin {
+        max-width: 25em;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+
+      .form-signin-heading {
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="container">
+      <form id="signin-form" class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <div id="signin-message" class="alert" role="alert"></div>
+        <div class="form-group">
+          <input id="signin-email" type="email" placeholder="Email address" class="form-control" /> 
+        </div>
+        <div class="form-group">
+          <input id="signin-password" type="password" placeholder="Password" class="form-control" />
+        </div>
+        <div class="btn-group" role="group" aria-label="signin-buttons-label">
+          <button id="signin-submit" class="btn btn-primary" type="submit">Sign in</button>
+          <button id="signin-register" class="btn btn-default" type="button">Register</button>
+        </div>
+      </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="javascripts/pages/signin.js"></script>
+
+  </body>
+</html>
