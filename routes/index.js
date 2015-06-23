@@ -185,24 +185,26 @@ router.post('/data', apiKeyMiddleware, dataHandler);
 router.get('/d/:apiKey', apiKeyMiddleware, dataHandler);
 
 router.get('/data/:last?', tokenMiddleware, function(req, res, next) {
-  var query = { userId: String(req.user._id) };
-  var last = parseInt(req.params.last);
-  if (last > 0) {
-    var date = new Date(last);
-    query.date = { $gt: date };
-  }
-  db.collection('data').find(query).limit(100).sort({ date: -1 }).toArray().then(function(items) {
-    if (! items) {
-      return next(new Error('ERROR_DATA_ITEMS_NULL'));
+  setImmediate(function() {
+    var query = { userId: String(req.user._id) };
+    var last = parseInt(req.params.last);
+    if (last > 0) {
+      var date = new Date(last);
+      query.date = { $gt: date };
     }
-    items.map(function(item) {
-      // delete item._id;
-      delete item.userId;
-      item.dateUnixtime = item.date.getTime();
-      item.date = Date.UTC(item.date.getFullYear(), item.date.getMonth(), item.date.getDate(), item.date.getHours(), item.date.getMinutes(), item.date.getSeconds());
-      return item;
+    db.collection('data').find(query).limit(100).sort({ date: -1 }).toArray().then(function(items) {
+      if (! items) {
+        return next(new Error('ERROR_DATA_ITEMS_NULL'));
+      }
+      items.map(function(item) {
+        // delete item._id;
+        delete item.userId;
+        item.dateUnixtime = item.date.getTime();
+        item.date = Date.UTC(item.date.getFullYear(), item.date.getMonth(), item.date.getDate(), item.date.getHours(), item.date.getMinutes(), item.date.getSeconds());
+        return item;
+      });
+      res.json(items);
     });
-    res.json(items);
   }).catch(next);
 });
 
@@ -214,18 +216,20 @@ router.delete('/data/:id', tokenMiddleware, function(req, res, next) {
 
 router.get('/dataFields', tokenMiddleware, function(req, res, next) {
   db.collection('data').find({ userId: String(req.user._id) }).limit(100).toArray().then(function(items) {
-    var keys = [];
-    for (var i=0,ln=items.length; i<ln; i++) {
-      for (var k in items[i]) {
-        if (['_id', 'userId'].indexOf(k) != -1) {
-          continue;
-        }
-        if (keys.indexOf(k) === -1) {
-          keys.push(k);
+    setImmediate(function() {
+      var keys = [];
+      for (var i=0,ln=items.length; i<ln; i++) {
+        for (var k in items[i]) {
+          if (['_id', 'userId'].indexOf(k) != -1) {
+            continue;
+          }
+          if (keys.indexOf(k) === -1) {
+            keys.push(k);
+          }
         }
       }
-    }
-    res.json(keys);
+      res.json(keys);
+    });
   }).catch(next);
 });
 
