@@ -73,7 +73,7 @@
           record: data
         });
       } else {
-        console.error('Wrong chart data', data);
+        window.console.error('Wrong chart data', data);
       }
     },
     function() {

@@ -114,13 +114,15 @@
     if (! ('gaTrackerId' in giot.config)) {
       return;
     }
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    try {
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', giot.config.gaTrackerId, 'auto');
-    ga('send', 'pageview');
+      ga('create', giot.config.gaTrackerId, 'auto');
+      ga('send', 'pageview');
+    } catch(e) { window.console && window.console.warn(e); }
   }
 
   // execute
@@ -137,6 +139,12 @@
 
   $.subscribe('userUpdated', function(event, item) {
     $(navUserEl).html(item.email);
+  });
+
+  $.subscribe('pageChanged', function(event, name) {
+    try {
+      ga('send', 'pageview', '/' + name);
+    } catch(e) { window.console && window.console.warn(e); }
   });
 
   // execute
