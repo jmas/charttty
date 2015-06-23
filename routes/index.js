@@ -191,7 +191,7 @@ router.get('/data/:last?', tokenMiddleware, function(req, res, next) {
     var date = new Date(last);
     query.date = { $gt: date };
   }
-  db.collection('data').find(query).sort({ date: -1 }).toArray().then(function(items) {
+  db.collection('data').find(query).limit(100).sort({ date: -1 }).toArray().then(function(items) {
     if (! items) {
       return next(new Error('ERROR_DATA_ITEMS_NULL'));
     }
