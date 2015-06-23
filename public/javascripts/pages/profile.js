@@ -17,6 +17,7 @@
   var userPwdNewRetypeEl = document.getElementById('user-pwd-retype');
   var userPwdSubmitEl = document.getElementById('user-pwd-submit');
   var updateApiKeyEl = document.getElementById('profile-update-apikey');
+  var dataurlEl = document.getElementById('profile-dataurl');
 
   // functions
 
@@ -25,8 +26,10 @@
   }
 
   function populateProfile(data) {
+    var serviceUrl = window.location.protocol + '//' + window.location.host + '/d/' + data.apiKey + '?fieldName=value&field2Name=value2';
     $(emailEl).val(data.email);
     $(apikeyEl).val(data.apiKey);
+    $(dataurlEl).val(serviceUrl);
   }
 
   function showMessage(message, type) {
