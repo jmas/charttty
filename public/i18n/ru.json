@@ -43,5 +43,6 @@
 	"<code>fieldName</code> is name of field for identity what data we get.": "<code>fieldName</code> - это идентификатор поля.",
 	"<code>value</code> is integer or float number, value of <code>fieldName</code>.": "<code>value</code> - целое или дробное число, значение для поля <code>fieldName</code>.",
 	"You can add one or more <code>fieldName=value</code> pairs separated by <code>&amp;</code>.": "Вы можете использовать одно или несколько пар <code>fieldName=value</code>, разделенных <code>&amp;</code>.",
-	"We are waiting for data from you…": "Ожидаем данные&hellip;"
+	"We are waiting for data from you…": "Ожидаем данные&hellip;",
+	"You need to send data first for initialize fields. <a href=\"https://github.com/jmas/charttty/wiki\">How to do this</a>": "Вам нужно для начала отправить данные, чтобы инициализировать поля. <a href=\"https://github.com/jmas/charttty/wiki\">Как это сделать</a>"
 }
