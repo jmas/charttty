@@ -35,5 +35,13 @@
 	"Data Fields are required.": "Поля для данных обязательны.",
 	"id is not valid.": "id не верный.",
 	"Name and Data fields are required.": "Название, Поля из данных - обязательны.",
-	"Are you sure?": "Вы уверены?"
+	"Are you sure?": "Вы уверены?",
+	"For start wokring you need to send some data. Use follow URL to send data by HTTP GET request.": "Для начала работы вам необходимо отправить немного данных. Используйте следующий URL для отправки данных HTTP GET запросом.",
+	"Where:": "Где:",
+	"is your Private API Key.": "- это ваш Личный API Key.",
+	"Welcome to Charttty": "Добро пожаловать в Charttty",
+	"<code>fieldName</code> is name of field for identity what data we get.": "<code>fieldName</code> - это идентификатор поля.",
+	"<code>value</code> is integer or float number, value of <code>fieldName</code>.": "<code>value</code> - целое или дробное число, значение для поля <code>fieldName</code>.",
+	"You can add one or more <code>fieldName=value</code> pairs separated by <code>&amp;</code>.": "Вы можете использовать одно или несколько пар <code>fieldName=value</code>, разделенных <code>&amp;</code>.",
+	"We are waiting for data from you…": "Ожидаем данные&hellip;"
 }
