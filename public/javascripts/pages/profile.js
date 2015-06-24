@@ -18,6 +18,7 @@
   var userPwdSubmitEl = document.getElementById('user-pwd-submit');
   var updateApiKeyEl = document.getElementById('profile-update-apikey');
   var dataurlEl = document.getElementById('profile-dataurl');
+  var _ = window.i18n.t.bind(window.i18n);
 
   // functions
 
@@ -53,18 +54,18 @@
   function saveProfile() {
     var email = $(emailEl);
     if (! email) {
-      showMessage('Email address is required.', 'danger');
+      showMessage(_('Email address is required.'), 'danger');
       return {then: function() {}};
     }
     var data = {
       email: email.val()
     };
     return $.post('/user', data).then(function(item) {
-      if (item.error) {
-        showMessage(item.error, 'danger');
+      if ('error' in item) {
+        showMessage(_(item.error), 'danger');
         return {then: function() {}};
       }
-      showMessage('Successfully saved.', 'success');
+      showMessage(_('Successfully saved.'), 'success');
       $.publish('userUpdated', [item]);
     });
   }
@@ -83,15 +84,15 @@
     var pwdNew = $(userPwdNewEl).val();
     var pwdNewRetype = $(userPwdNewRetypeEl).val();
     if (! pwdCurrent || ! pwdNew || ! pwdNewRetype) {
-      showPwdMessage('Current Password, New Password, New Password Retype are required.', 'danger');
+      showPwdMessage(_('Current Password, New Password, New Password Retype are required.'), 'danger');
       return {then: function() {}};
     }
     if (pwdNew !== pwdNewRetype) {
-      showPwdMessage('New Password Retype is invalid.', 'danger');
+      showPwdMessage(_('New Password Retype is invalid.'), 'danger');
       return {then: function() {}};
     }
     if (pwdNew.length < 4) {
-      showPwdMessage('New Password length should be more than 4 chars.', 'danger');
+      showPwdMessage(_('New Password length should be more than 4 chars.'), 'danger');
       return {then: function() {}};
     }
     return $.post('/user/password', {
@@ -100,7 +101,7 @@
       passwordNewRetype: pwdNewRetype
     }).then(function(user) {
       if ('error' in user) {
-        showPwdMessage(user.error, 'danger');
+        showPwdMessage(_(user.error), 'danger');
         return {then: function() {}};
       }
       $(userPwdModalEl).modal('hide');
@@ -128,7 +129,7 @@
   });
 
   $(updateApiKeyEl).on('click', function() {
-    if (! confirm('Are you sure?')) {
+    if (! confirm(_('Are you sure?'))) {
       return false;
     }
     updateApiKey().then(function(user) {

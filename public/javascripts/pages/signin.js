@@ -10,6 +10,7 @@
   var passwordEl = document.getElementById('signin-password');
   var submitEl = document.getElementById('signin-submit');
   var registerEl = document.getElementById('signin-register');
+  var _ = window.i18n.t.bind(window.i18n);
 
   // functions
 
@@ -17,7 +18,7 @@
     hideMessage();
     return $.post('/login', { email: $(emailEl).val(), password: $(passwordEl).val() }).then(function(user) {
       if ('error' in user) {
-        return showMessage(user.error, 'danger');
+        return showMessage(_(user.error), 'danger');
       }
       window.localStorage.accessToken = user.accessToken;
       window.location.href = '/app.html';
@@ -28,7 +29,7 @@
     hideMessage();
     return $.post('/register', { email: $(emailEl).val(), password: $(passwordEl).val() }).then(function(user) {
       if ('error' in user) {
-        return showMessage(user.error, 'danger');
+        return showMessage(_(user.error), 'danger');
       }
       window.localStorage.accessToken = user.accessToken;
       window.location.href = '/app.html';
@@ -56,6 +57,25 @@
     } catch(e) { window.console && window.console.warn(e); }
   }
 
+  function initI18n() {
+    var userLang = navigator.language || navigator.userLanguage;
+    if (userLang !== 'en') {
+      window.i18n.loadDict(userLang).then(function() {
+        $('[data-t]').each(function() {
+          var phrase = $(this).prop('tagName') === 'INPUT' ? $(this).attr('placeholder'): $(this).html();
+          var phraseTrans = i18n.t(phrase);
+          if (phrase !== phraseTrans) {
+            if ($(this).prop('tagName') === 'INPUT') {
+              $(this).attr('placeholder', phraseTrans);
+            } else {
+              $(this).html(phraseTrans);
+            }
+          }
+        });
+      });
+    }
+  }
+
   // handlers
 
   $(formEl).on('submit', function() {
@@ -74,6 +94,7 @@
   if (window.localStorage.accessToken) {
     window.location.href = '/app.html';
   }
+  initI18n();
   initGa();
 
 })(this);

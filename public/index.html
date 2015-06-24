@@ -74,27 +74,28 @@
 
     <div class="container">
       <p class="logo"><img src="/images/charttty-logo.png" /></p>
-      <h1 class="header">Charttty</h1>
-      <p class="slogan">You can use it for drawing charts with dynamic data.</p>
+      <h1 class="header" data-t>Charttty</h1>
+      <p class="slogan" data-t>You can use it for drawing charts with dynamic data.</p>
       <form id="signin-form" class="form-signin">
         <div id="signin-message" class="alert" role="alert"></div>
         <div class="form-group">
-          <input id="signin-email" type="email" placeholder="Email address" class="form-control" /> 
+          <input id="signin-email" type="email" placeholder="Email address" class="form-control" data-t /> 
         </div>
         <div class="form-group">
-          <input id="signin-password" type="password" placeholder="Password" class="form-control" />
+          <input id="signin-password" type="password" placeholder="Password" class="form-control" data-t />
         </div>
         <div class="btn-group" role="group" aria-label="signin-buttons-label">
-          <button id="signin-submit" class="btn btn-primary" type="submit">Sign in</button>
-          <button id="signin-register" class="btn btn-default" type="button">Register</button>
+          <button id="signin-submit" class="btn btn-primary" type="submit" data-t>Sign in</button>
+          <button id="signin-register" class="btn btn-default" type="button" data-t>Register</button>
         </div>
       </form>
       <p>
-        <a href="https://github.com/jmas/charttty">Github</a>
+        <a href="https://github.com/jmas/charttty" data-t>Github</a>
       </p>
     </div>
 
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="javascripts/i18n.js"></script>
     <script src="javascripts/pages/signin.js"></script>
 
   </body>

@@ -125,6 +125,25 @@
     } catch(e) { window.console && window.console.warn(e); }
   }
 
+  function initI18n() {
+    var userLang = navigator.language || navigator.userLanguage;
+    if (userLang !== 'en') {
+      window.i18n.loadDict(userLang).then(function() {
+        $('[data-t]').each(function() {
+          var phrase = $(this).prop('tagName') === 'INPUT' ? $(this).attr('placeholder'): $(this).html();
+          var phraseTrans = i18n.t(phrase);
+          if (phrase !== phraseTrans) {
+            if ($(this).prop('tagName') === 'INPUT') {
+              $(this).attr('placeholder', phraseTrans);
+            } else {
+              $(this).html(phraseTrans);
+            }
+          }
+        });
+      });
+    }
+  }
+
   // execute
 
   $(navLogoutEl).on('click', function() {
@@ -159,6 +178,7 @@
   });
 
   initPage();
+  initI18n();
   loadConfig().then(function() {
     initTracker();
     loadUser().then(function() {

@@ -255,7 +255,7 @@ router.post('/chart', tokenMiddleware, function(req, res, next) {
   }
   if (! req.body['fields[]'] || req.body['fields[]'].length === 0) {
     return res.json({
-      error: 'Data fields are required.'
+      error: 'Data Fields are required.'
     });
   }
   db.collection('chart').insert({
@@ -277,7 +277,7 @@ router.post('/chart/:id', tokenMiddleware, function(req, res, next) {
   }).then(function(item) {
     if (! item) {
       return res.json({
-        error: 'Chart id not valid.'
+        error: 'id is not valid.'
       });
     }
     chart = item;

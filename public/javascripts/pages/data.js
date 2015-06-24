@@ -11,6 +11,7 @@
   var messageEl = document.getElementById('data-message');
   var dataFields = [];
   var data = [];
+  var _ = window.i18n.t.bind(window.i18n);
 
   // functions
 
@@ -22,7 +23,7 @@
       bodyItems.push('<td data-'+dataFields[i]+'></td>');
     }
     headTpl = '<tr>'+headItems.join('')+'<th>&nbsp;</td></tr>';
-    bodyTpl = '<tr>'+bodyItems.join('')+'<td><a href="#" data-remove><span class="glyphicon glyphicon-minus-sign"></span></a></td></tr>';
+    bodyTpl = '<tr>'+bodyItems.join('')+'<td><a href="#" data-remove title="'+_('Remove')+'"><span class="glyphicon glyphicon-minus-sign"></span></a></td></tr>';
     tableHeadEl.innerHTML = headTpl;
     list = new DataList(
       tableBodyEl,
@@ -44,7 +45,7 @@
         if (typeof itemData[dataFields[i]] !== 'undefined') {
           tdEl.innerHTML = itemData[dataFields[i]];
         } else {
-          tdEl.innerHTML = '<small>n/a</small>';
+          tdEl.innerHTML = '<small>'+_('n/a')+'</small>';
         }
       }
     };
@@ -81,7 +82,7 @@
     buildList();
     if (dataFields.length === 0) {
       $(panelEl).hide();
-      showMessage('You need to send data first for initialize fields. <a href="https://github.com/jmas/charttty/wiki">How to do this</a>', 'info');
+      showMessage(_('You need to send data first for initialize fields. <a href="https://github.com/jmas/charttty/wiki">How to do this</a>'), 'info');
     } else {
       hideMessage();
     }

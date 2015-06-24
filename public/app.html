@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
-    <title>WebApp - Charttty</title>
+    <title>Web - Charttty</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <style type="text/css">
@@ -20,29 +20,29 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="sr-only" data-t>Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/app.html">Charttty WebApp</a>
+          <a class="navbar-brand" href="/app.html" data-t>Charttty</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="#charts">Charts</a></li>
-            <li><a href="#data">Data</a></li>
-            <li><a href="https://github.com/jmas/iottty/wiki">Docs</a></li>
+            <li><a href="#charts" data-t>Charts</a></li>
+            <li><a href="#data" data-t>Data</a></li>
+            <li><a href="https://github.com/jmas/iottty/wiki" data-t>Docs</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#profile">Signed in as <span id="nav-user"></span></a></li>
-            <li><a id="nav-logout" href="#">Logout</a></li>
+            <li><a href="#profile"><span data-t>Signed in as</span> <span id="nav-user"></span></a></li>
+            <li><a id="nav-logout" href="#" data-t>Logout</a></li>
           </ul>
         </div>
       </div>
     </nav>
 
     <div id="dashboard-container" class="container" data-page="charts">
-      <p><button type="button" class="btn btn-default" id="dashboard-add-chart">Add Chart</button></p>
+      <p><button type="button" class="btn btn-default" id="dashboard-add-chart" data-t>Add Chart</button></p>
       <div id="dashboard-chart-list"></div>
     </div>
 
@@ -50,7 +50,7 @@
       <div id="data-message" class="alert" role="alert"></div>
       <div id="data-panel" class="panel panel-default">
         <div class="panel-heading">
-          Data
+          <span data-t>Data</span>
           <span class="pull-right">
             <a href="#" data-edit title="Export"><i class="glyphicon glyphicon-export"></i></a>
           </span>
@@ -65,16 +65,16 @@
 
     <div id="profile-container" class="container" data-page="profile">
       <div class="panel panel-default">
-        <div class="panel-heading">Edit Profile</div>
+        <div class="panel-heading" data-t>Edit Profile</div>
         <div class="panel-body">
           <div id="profile-message" class="alert" role="alert"></div>
           <form id="profile-form">
             <div class="form-group">
-              <label for="profile-email">Email address</label>
+              <label for="profile-email" data-t>Email address</label>
               <input id="profile-email" type="email" class="form-control" placeholder="Email" />
             </div>
             <div class="form-group">
-              <label for="profile-token">Private API Key</label>
+              <label for="profile-token" data-t>Private API Key</label>
               <div class="input-group">
                 <input id="profile-apikey" type="text" class="form-control" disabled placeholder="API Key" />
                 <div class="input-group-btn">
@@ -83,11 +83,11 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="profile-dataurl">URL for sending data</label>
+              <label for="profile-dataurl" data-t>URL for sending data</label>
               <input id="profile-dataurl" type="text" class="form-control" disabled placeholder="URL" />
             </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button id="profile-chpwd" type="button" class="btn btn-default">Change Password</button>
+            <button type="submit" class="btn btn-primary" data-t>Save</button>
+            <button id="profile-chpwd" type="button" class="btn btn-default" data-t>Change Password</button>
           </form>
         </div>
       </div>
@@ -105,20 +105,20 @@
             <form id="chart-edit-form">
               <input id="chart-edit-id" type="hidden" />
               <div class="form-group">
-                <label for="chart-edit-name">Name</label>
+                <label for="chart-edit-name" data-t>Name</label>
                 <input id="chart-edit-name" type="text" class="form-control" />
               </div>
-              <h5>Data fields</h5>
+              <label data-t>Data Fields</label>
               <div id="chart-edit-modal-fields"></div>
               <div id="chart-edit-modal-fields-message" class="alert alert-info"></div>
             </form>
           </div>
           <div class="modal-footer">
             <div class="pull-left">
-              <button id="chart-edit-remove" type="button" class="btn btn-danger" title="Remove"><span class="glyphicon glyphicon-minus-sign"></span></button>
+              <button id="chart-edit-remove" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus-sign"></span></button>
             </div>
             <div class="pull-right">
-              <button id="chart-edit-save" type="button" class="btn btn-primary">Save</button>
+              <button id="chart-edit-save" type="button" class="btn btn-primary" data-t>Save</button>
             </div>
           </div>
         </div>
@@ -130,28 +130,28 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Change Password</h4>
+            <h4 class="modal-title" data-t>Change Password</h4>
           </div>
           <div class="modal-body">
             <div id="user-pwd-message" class="alert alert-danger" role="alert"></div>
             <form id="user-pwd-form">
               <input id="user-pwd-id" type="hidden" />
               <div class="form-group">
-                <label for="user-pwd-current">Current Password</label>
+                <label for="user-pwd-current" data-t>Current Password</label>
                 <input id="user-pwd-current" type="password" class="form-control" />
               </div>
               <div class="form-group">
-                <label for="user-pwd-new">New Password</label>
+                <label for="user-pwd-new" data-t>New Password</label>
                 <input id="user-pwd-new" type="password" class="form-control" />
               </div>
               <div class="form-group">
-                <label for="user-pwd-retype">New Password Retype</label>
+                <label for="user-pwd-retype" data-t>New Password Retype</label>
                 <input id="user-pwd-retype" type="password" class="form-control" />
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button id="user-pwd-submit" type="button" class="btn btn-primary">Save</button>
+            <button id="user-pwd-submit" type="button" class="btn btn-primary" data-t>Save</button>
           </div>
         </div>
       </div>
@@ -161,19 +161,19 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Welcome to Charttty</h4>
+            <h4 class="modal-title" data-t>Welcome to Charttty</h4>
           </div>
           <div class="modal-body">
-            <p>For start wokring you need to send some data. Use follow URL to send data by HTTP GET request.</p>
+            <p data-t>For start wokring you need to send some data. Use follow URL to send data by HTTP GET request.</p>
             <h5>URL</h5>
             <p><code id="welcome-dataurl"></code></p>
-            <p>Where:</p>
-            <p><code id="welcome-apikey"></code> <span>is your Private API Key.</span></p>
-            <p><code>fieldName</code> is name of field for identity what data we get.</p>
-            <p><code>value</code> is integer or float number, value of <code>fieldName</code>.</p>
-            <p>You can add one or more <code>fieldName=value</code> pairs separated by <code>&amp;</code>.</p>
+            <p data-t>Where:</p>
+            <p><code id="welcome-apikey"></code> <span data-t>is your Private API Key.</span></p>
+            <p data-t><code>fieldName</code> is name of field for identity what data we get.</p>
+            <p data-t><code>value</code> is integer or float number, value of <code>fieldName</code>.</p>
+            <p data-t>You can add one or more <code>fieldName=value</code> pairs separated by <code>&amp;</code>.</p>
             <hr />
-            <p><b>We are waiting for data from you&hellip;</b></p>
+            <p><b data-t>We are waiting for data from you&hellip;</b></p>
           </div>
         </div>
       </div>
@@ -184,7 +184,7 @@
         <div class="panel-heading">
           <span data-name></span>
           <span class="pull-right">
-            <a href="#" data-edit title="Edit"><i class="glyphicon glyphicon-cog"></i></a>
+            <a href="#" data-edit><i class="glyphicon glyphicon-cog"></i></a>
           </span>
         </div>
         <div data-chart style="position: relative;"></div>
@@ -196,6 +196,7 @@
     <script src="javascripts/highcharts.js"></script>
     <script src="javascripts/datalist.js"></script>
     <script src="javascripts/pubsub.js"></script>
+    <script src="javascripts/i18n.js"></script>
     <script src="javascripts/pages/charts.js"></script>
     <script src="javascripts/pages/data.js"></script>
     <script src="javascripts/pages/profile.js"></script>

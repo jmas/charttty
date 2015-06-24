@@ -21,6 +21,7 @@
   var editNameEl = document.getElementById('chart-edit-name');
   var editTitleEl = document.getElementById('chart-edit-modal-title');
   var editRemoveEl = document.getElementById('chart-edit-remove');
+  var _ = window.i18n.t.bind(window.i18n);
 
   var chartList = new DataList(
     chartListEl,
@@ -29,8 +30,10 @@
     function(el, data) {
       var nameEl = el.querySelector('[data-name]');
       var chartEl = el.querySelector('[data-chart]');
+      var editEl = el.querySelector('[data-edit]');
       nameEl.innerHTML = data.name;
       el.setAttribute('data-id', data._id);
+      editEl.setAttribute('title', _('Edit'));
       if ('fields' in data && chartEl) {
         var chartId = 'chart' + Math.ceil((Math.random() * 1000000) + Date.now());
         charts.push({
@@ -119,7 +122,7 @@
       data.fields.push($(this).val());
     });
     if (! data.name || data.fields.length === 0) {
-      showEditMessage('Fields Name and Data fields are required.', 'danger');
+      showEditMessage(_('Name and Data fields are required.'), 'danger');
       return {then: function() {}};
     }
     $(editModalEl).modal('hide');
@@ -138,7 +141,7 @@
     hideEditMessage();
     if (dataFields.length === 0) {
       $(editFieldsMessageEl).show();
-      $(editFieldsMessageEl).html('You need to send data first for initialize fields. <a href="https://github.com/jmas/charttty/wiki">How to do this</a>');
+      $(editFieldsMessageEl).html(_('You need to send data first for initialize fields. <a href="https://github.com/jmas/charttty/wiki">How to do this</a>'));
     } else {
       $(editFieldsMessageEl).hide();
     }
@@ -146,8 +149,9 @@
     $(editNameEl).val('');
     $(editFieldsEl).find('input[type="checkbox"]').removeAttr('checked');
     if (chartId) {
+      editRemoveEl.setAttribute('title', _('Remove'));
       $(editRemoveEl).show();
-      editTitleEl.innerHTML = 'Edit Chart';
+      editTitleEl.innerHTML = _('Edit Chart');
       $.get('/chart/'+chartId).then(function(item) {
         $(editNameEl).val(item.name);
         for (var i=0,ln=item.fields.length; i<ln; i++) {
@@ -156,7 +160,7 @@
       });
     } else {
       $(editRemoveEl).hide();
-      editTitleEl.innerHTML = 'Add Chart';
+      editTitleEl.innerHTML = _('Add Chart');
     }
     $(editModalEl).modal('show');
   }
@@ -248,7 +252,7 @@
   });
 
   $(editRemoveEl).on('click', function() {
-    if (! confirm('Are you sure?')) {
+    if (! confirm(_('Are you sure?'))) {
       return false;
     }
     var id = $(editIdEl).val();
