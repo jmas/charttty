@@ -213,7 +213,7 @@ router.delete('/data/:id', tokenMiddleware, function(req, res, next) {
 });
 
 router.get('/dataFields', tokenMiddleware, function(req, res, next) {
-  db.collection('data').find({ userId: String(req.user._id) }).limit(100).toArray().then(function(items) {
+  db.collection('data').find({ userId: String(req.user._id) }).limit(100).sort({ date: -1 }).toArray().then(function(items) {
     var keys = [];
     for (var i=0,ln=items.length; i<ln; i++) {
       for (var k in items[i]) {
