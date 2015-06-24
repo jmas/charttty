@@ -49,7 +49,7 @@
               gridLineColor: '#f2f2f2'
             },
             xAxis: {
-                // minRange: 3600 * 1000
+              // minRange: 3600 * 1000
             },
             plotOptions: {
               series: {
@@ -58,7 +58,7 @@
                   radius: 3
                 },
                 animation: {
-                    duration: 2000
+                  duration: 2000
                 }
               }
             },
@@ -193,7 +193,7 @@
         items.map(function(item) {
           if (field in item) {
             var v = parseFloat(item[field]);
-            useSeries.addPoint([item.date, isNaN(v) ? 0: v], false);
+            useSeries.addPoint([item.dateUnixtime, isNaN(v) ? 0: v], false);
           }
           lastTime = item.date;
         });
@@ -286,6 +286,14 @@
 
   $.subscribe('userUpdated', function() {
     loadCharts();
+  });
+
+  // execute
+
+  Highcharts.setOptions({
+    global: {
+      useUTC: false
+    }
   });
 
 })(this);
