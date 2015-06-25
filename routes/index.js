@@ -214,6 +214,9 @@ router.get('/d/:apiKey/:type', apiKeyMiddleware, function(req, res, next) {
       // @todo
       next(new Error('NOT_AVAILABLE'));
       break;
+    default:
+      next(new Error('TYPE_NOT_VALID'));
+      break;
   }
 });
 
