@@ -10,4 +10,6 @@ Interface have English, Russian, Ukrainian languages.
 
 [How to start?](https://github.com/jmas/charttty/wiki)
 
+[Roadmap](https://github.com/jmas/charttty/issues/1)
+
 MIT license.
