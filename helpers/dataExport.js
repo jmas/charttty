@@ -23,8 +23,6 @@ module.exports = {
       headers.push({ width: 25, caption: item });
     });
 
-    console.log(fieldsMap);
-
     var options = {
       map: fieldsMap,
       headers: headers,

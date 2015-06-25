@@ -7,7 +7,7 @@ var validator = require('validator');
 var crypto = require('crypto');
 var dataExport = require('../helpers/dataExport');
 
-function dataHandler(req, res, next) {
+function dataInsertHandler(req, res, next) {
   var params = req.query;
   var validParams = {}, validKey, validParam;
   for (var k in params) {
@@ -26,6 +26,28 @@ function dataHandler(req, res, next) {
   db.collection('data').insert(validParams).then(function() {
     res.set('Content-Type', 'text/plain');
     res.send('OK');
+  }).catch(next);
+}
+
+function dataGetHandler(req, res, next) {
+  var query = { userId: String(req.user._id) };
+  var last = parseInt(req.params.last || 0);
+  if (last > 0) {
+    var date = new Date(last);
+    query.date = { $gt: date };
+  }
+  db.collection('data').find(query).limit(100).sort({ date: -1 }).toArray().then(function(items) {
+    if (! items) {
+      return next(new Error('ERROR_DATA_ITEMS_NULL'));
+    }
+    items.map(function(item) {
+      // delete item._id;
+      delete item.userId;
+      item.dateUnixtime = item.date.getTime();
+      item.date = Date.UTC(item.date.getFullYear(), item.date.getMonth(), item.date.getDate(), item.date.getHours(), item.date.getMinutes(), item.date.getSeconds());
+      return item;
+    });
+    res.json(items);
   }).catch(next);
 }
 
@@ -220,30 +242,11 @@ router.get('/d/:apiKey/export/:type', apiKeyMiddleware, function(req, res, next)
   }
 });
 
-router.post('/data', apiKeyMiddleware, dataHandler);
-router.get('/d/:apiKey', apiKeyMiddleware, dataHandler);
+// router.post('/data', apiKeyMiddleware, dataInsertHandler);
+router.get('/d/:apiKey', apiKeyMiddleware, dataInsertHandler);
+router.get('/d/:apiKey/data/:last?', apiKeyMiddleware, dataGetHandler);
 
-router.get('/data/:last?', tokenMiddleware, function(req, res, next) {
-  var query = { userId: String(req.user._id) };
-  var last = parseInt(req.params.last);
-  if (last > 0) {
-    var date = new Date(last);
-    query.date = { $gt: date };
-  }
-  db.collection('data').find(query).limit(100).sort({ date: -1 }).toArray().then(function(items) {
-    if (! items) {
-      return next(new Error('ERROR_DATA_ITEMS_NULL'));
-    }
-    items.map(function(item) {
-      // delete item._id;
-      delete item.userId;
-      item.dateUnixtime = item.date.getTime();
-      item.date = Date.UTC(item.date.getFullYear(), item.date.getMonth(), item.date.getDate(), item.date.getHours(), item.date.getMinutes(), item.date.getSeconds());
-      return item;
-    });
-    res.json(items);
-  }).catch(next);
-});
+router.get('/data/:last?', tokenMiddleware, dataGetHandler);
 
 router.delete('/data/:id', tokenMiddleware, function(req, res, next) {
   db.collection('data').remove({ _id: db.ObjectId(req.params.id), userId: String(req.user._id) }, { justOne: true }).then(function(item) {
