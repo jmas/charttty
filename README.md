@@ -8,6 +8,13 @@ Charttty is web-service for presenting your dynamic data into pretty charts. You
 
 Interface have English, Russian, Ukrainian languages.
 
+You can do with Charttty:
+- [x] You can log data from your device into Data table
+- [x] You can add new data fields by add data field to URL when you log data
+- [x] You can create many charts on one page and see live data
+- [x] You can use English, Ukrainian and Russian language or can add yours translation
+- [x] You can export all collected data into Excel file
+
 [How to start?](https://github.com/jmas/charttty/wiki)
 
 [Roadmap](https://github.com/jmas/charttty/issues/1)
