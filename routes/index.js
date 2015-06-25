@@ -199,7 +199,7 @@ router.post('/user/apiKey', tokenMiddleware, function(req, res, next) {
   }).catch(next);
 });
 
-router.get('/d/:apiKey/:type', apiKeyMiddleware, function(req, res, next) {
+router.get('/d/:apiKey/export/:type', apiKeyMiddleware, function(req, res, next) {
   var type = req.params.type;
   var collectionStream = db.collection('data').find({ userId: String(req.user._id) });
   switch (type) {
@@ -215,7 +215,7 @@ router.get('/d/:apiKey/:type', apiKeyMiddleware, function(req, res, next) {
       next(new Error('NOT_AVAILABLE'));
       break;
     default:
-      next(new Error('TYPE_NOT_VALID'));
+      next();
       break;
   }
 });

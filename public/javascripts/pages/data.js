@@ -87,7 +87,7 @@
   });
 
   $(exportExcelEl).on('click', function() {
-    window.open('/d/'+window.giot.user.apiKey+'/excel');
+    window.open('/d/'+window.giot.user.apiKey+'/export/excel');
     return false;
   });
 
