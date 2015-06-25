@@ -10,6 +10,7 @@
   var passwordEl = document.getElementById('signin-password');
   var submitEl = document.getElementById('signin-submit');
   var registerEl = document.getElementById('signin-register');
+  var giot = {};
   var _ = window.i18n.t.bind(window.i18n);
 
   // functions
@@ -45,7 +46,7 @@
     $(messageEl).hide();
   }
 
-  function initGa() {
+  function initTracker() {
     try {
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -76,6 +77,12 @@
     }
   }
 
+  function loadConfig() {
+    return $.get('/config.json').then(function(config) {
+      giot.config = config;
+    });
+  }
+
   // handlers
 
   $(formEl).on('submit', function() {
@@ -95,6 +102,8 @@
     window.location.href = '/app.html';
   }
   initI18n();
-  initGa();
+  loadConfig().then(function() {
+    initTracker();
+  });
 
 })(this);

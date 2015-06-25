@@ -9,6 +9,10 @@
   var tableBodyEl = document.getElementById('data-table-body');
   var panelEl = document.getElementById('data-panel');
   var messageEl = document.getElementById('data-message');
+  var exportEl = document.getElementById('data-export');
+  var exportModalEl = document.getElementById('export-modal');
+  var exportExcelEl = document.getElementById('export-excel');
+  var exportCsvEl = document.getElementById('export-csv');
   var dataFields = [];
   var data = [];
   var _ = window.i18n.t.bind(window.i18n);
@@ -74,6 +78,20 @@
     removeData(itemEl.attr('data-id')).then(function() {
       itemEl.remove();
     });
+    return false;
+  });
+
+  $(exportEl).on('click', function() {
+    $(exportModalEl).modal('show');
+    return false;
+  });
+
+  $(exportExcelEl).on('click', function() {
+    window.open('/d/'+window.giot.user.apiKey+'/excel');
+    return false;
+  });
+
+  $(exportCsvEl).on('click', function() {
     return false;
   });
 

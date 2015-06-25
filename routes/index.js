@@ -5,6 +5,7 @@ var tokenMiddleware = require('../middleware/accessToken');
 var apiKeyMiddleware = require('../middleware/apiKey');
 var validator = require('validator');
 var crypto = require('crypto');
+var dataExport = require('../helpers/dataExport');
 
 function dataHandler(req, res, next) {
   var params = req.query;
@@ -26,6 +27,23 @@ function dataHandler(req, res, next) {
     res.set('Content-Type', 'text/plain');
     res.send('OK');
   }).catch(next);
+}
+
+function getDataFields(userId) {
+  return db.collection('data').find({ userId: String(userId) }).limit(100).sort({ date: -1 }).toArray().then(function(items) {
+    var keys = [];
+    for (var i=0,ln=items.length; i<ln; i++) {
+      for (var k in items[i]) {
+        if (['_id', 'userId'].indexOf(k) != -1) {
+          continue;
+        }
+        if (keys.indexOf(k) === -1) {
+          keys.push(k);
+        }
+      }
+    }
+    return keys;
+  });
 }
 
 router.post('/login', function(req, res, next) {
@@ -181,6 +199,24 @@ router.post('/user/apiKey', tokenMiddleware, function(req, res, next) {
   }).catch(next);
 });
 
+router.get('/d/:apiKey/:type', apiKeyMiddleware, function(req, res, next) {
+  var type = req.params.type;
+  var collectionStream = db.collection('data').find({ userId: String(req.user._id) });
+  switch (type) {
+    case 'excel':
+      getDataFields(req.user._id).then(function test(fields) {
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+        res.setHeader("Content-Disposition", "attachment; filename=" + "Data "+String(new Date())+".xlsx");
+        dataExport.asExcel(collectionStream, fields).pipe(res);
+      }).catch(next);
+      break;
+    case 'csv':
+      // @todo
+      next(new Error('NOT_AVAILABLE'));
+      break;
+  }
+});
+
 router.post('/data', apiKeyMiddleware, dataHandler);
 router.get('/d/:apiKey', apiKeyMiddleware, dataHandler);
 
@@ -213,19 +249,8 @@ router.delete('/data/:id', tokenMiddleware, function(req, res, next) {
 });
 
 router.get('/dataFields', tokenMiddleware, function(req, res, next) {
-  db.collection('data').find({ userId: String(req.user._id) }).limit(100).sort({ date: -1 }).toArray().then(function(items) {
-    var keys = [];
-    for (var i=0,ln=items.length; i<ln; i++) {
-      for (var k in items[i]) {
-        if (['_id', 'userId'].indexOf(k) != -1) {
-          continue;
-        }
-        if (keys.indexOf(k) === -1) {
-          keys.push(k);
-        }
-      }
-    }
-    res.json(keys);
+  getDataFields(req.user._id).then(function(fields) {
+    res.json(fields);
   }).catch(next);
 });
 
