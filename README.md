@@ -9,6 +9,7 @@ Charttty is web-service for presenting your dynamic data into pretty charts. You
 Interface have English, Russian, Ukrainian languages.
 
 [**How to start?**](https://github.com/jmas/charttty/wiki)
+
 [Roadmap](https://github.com/jmas/charttty/issues/1)
 
 You can do with Charttty:
