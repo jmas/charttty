@@ -15,8 +15,7 @@ You can do with Charttty:
 - [x] You can use English, Ukrainian and Russian language or can add yours translation
 - [x] You can export all collected data into Excel file
 
-[How to start?](https://github.com/jmas/charttty/wiki)
-
-[Roadmap](https://github.com/jmas/charttty/issues/1)
+- [How to start?](https://github.com/jmas/charttty/wiki)
+- [Roadmap](https://github.com/jmas/charttty/issues/1)
 
 MIT license.
