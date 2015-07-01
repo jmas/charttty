@@ -33,7 +33,7 @@
 	"User is not found.": "Користувач не знайдений.",
 	"User is already registered.": "Користувач вже зареєстрований.",
 	"Data Fields are required.": "Поля для даних обов'язкові.",
-	"id is not valid.": "id хибний.",
+	"ID is not valid.": "id хибний.",
 	"Name and Data fields are required.": "Назва, Поля з даних - обов'язкові.",
 	"Are you sure?": "Ви впевнені?",
 	"For start wokring you need to send some data. Use follow URL to send data by HTTP GET request.": "Для початку роботи вам необхідно відправити трохи даних. Використовуйте наступний URL для відправки даних HTTP GET запитом.",

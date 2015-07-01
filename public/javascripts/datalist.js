@@ -37,13 +37,18 @@
     beforeUpdateFn: null,
     afterUpdateFn: null,
     dummyTagName: 'DIV',
+    emptyTpl: '<div>List is empty.</div>',
     render: function() {
       if (! this.el) {
         return;
       }
       this.el.innerHTML = '';
-      for (var i=0,ln=this.data.length; i<ln; i++) {
-        this.el.appendChild(this.makeItemEl(this.data[i]));
+      if (this.data.length === 0) {
+        this.el.innerHTML = this.emptyTpl;
+      } else {
+        for (var i=0,ln=this.data.length; i<ln; i++) {
+          this.el.appendChild(this.makeItemEl(this.data[i]));
+        }
       }
     },
     update: function(data) {
@@ -69,6 +74,10 @@
         this.populateItemDataFn(itemEl, itemData);
       }
       return itemEl;
+    },
+    setEmptyTpl: function(tpl) {
+      this.emptyTpl = tpl;
+      this.render();
     }
   };
 

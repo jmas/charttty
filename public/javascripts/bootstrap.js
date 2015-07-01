@@ -59,7 +59,7 @@
         if (a === 'date' || (a > b)) {
           return 1;
         }
-        return 0; 
+        return 0;
       });
       $.publish('dataFieldsUpdated', [items]);
       return items;
@@ -122,7 +122,7 @@
 
       ga('create', giot.config.gaTrackerId, 'auto');
       ga('send', 'pageview');
-    } catch(e) { window.console && window.console.warn(e); }
+    } catch(e) { /*window.console && window.console.warn(e);*/ }
   }
 
   function initI18n() {
@@ -140,6 +140,7 @@
             }
           }
         });
+        $.publish('i18nLoaded');
       });
     }
   }
@@ -163,7 +164,7 @@
   $.subscribe('pageChanged', function(event, name) {
     try {
       ga('send', 'pageview', '/' + name);
-    } catch(e) { window.console && window.console.warn(e); }
+    } catch(e) { /* window.console && window.console.warn(e); */ }
   });
 
   // execute
@@ -173,7 +174,7 @@
 
   $.ajaxSetup({
     beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-Access-Token', giot.accessToken);        
+      xhr.setRequestHeader('X-Access-Token', giot.accessToken);
     }
   });
 
