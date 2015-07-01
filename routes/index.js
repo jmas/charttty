@@ -214,9 +214,16 @@ router.post('/user', tokenMiddleware, function(req, res, next) {
       error: 'Email address is not valid.'
     });
   }
-  user.email = req.body.email;
-  db.collection('user').update({ _id: db.ObjectId(user._id) }, user).then(function() {
-    res.json(user);
+  db.collection('user').findOne({ email: req.body.email }).then(function(user) {
+    if (user) {
+      return res.json({
+        error: 'User is already registered.'
+      });
+    }
+    user.email = req.body.email;
+    return db.collection('user').update({ _id: db.ObjectId(user._id) }, user).then(function() {
+      res.json(user);
+    });
   }).catch(next);
 });
 
