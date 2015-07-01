@@ -10,12 +10,14 @@ var dataExport = require('../helpers/dataExport');
 function dataInsertHandler(req, res, next) {
   var params = req.query;
   var validParams = {}, validKey, validParam;
+  var fields = [];
   for (var k in params) {
     validKey = k.replace(/[^a-zA-Z0-9]/, '');
     validParam = parseFloat(params[k].replace(/[^0-9\.]/, ''));
     validParam = isNaN(validParam) ? 0: validParam;
     if (validKey !== '' && validParam !== '') {
       validParams[validKey] = validParam;
+      fields.push(validKey);
     }
   }
   if (Object.keys(validParams).length === 0) {
@@ -27,6 +29,18 @@ function dataInsertHandler(req, res, next) {
     res.set('Content-Type', 'text/plain');
     res.send('OK');
   }).catch(next);
+  db.collection('events').find({ userId: String(req.user._id), field: { $in: fields } }).then(function(items) {
+    for (var i=0,fieldName,message,ln=items.length; i<ln; i++) {
+      fieldName = items[i].field;
+      if (validParams[fieldName] < items[i].minValue) {
+        // field is lower than
+        message = fieldName + ' is ' + validParams[fieldName] + ' > ' + items[i].minValue;
+      } else if (validParams[fieldName] > items[i].maxValue) {
+        // field is greather than
+        message = fieldName + ' is ' + validParams[fieldName] + ' > ' + items[i].minValue;
+      }
+    }
+  });
 }
 
 function dataGetHandler(req, res, next) {
@@ -301,22 +315,129 @@ router.post('/chart', tokenMiddleware, function(req, res, next) {
 
 router.post('/chart/:id', tokenMiddleware, function(req, res, next) {
   var id = req.params.id;
-  var chart;
+  var updatedItem;
+  if (! req.body.name) {
+    return res.json({
+      error: 'Name is required.'
+    });
+  }
+  if (! req.body['fields[]'] || req.body['fields[]'].length === 0) {
+    return res.json({
+      error: 'Data Fields are required.'
+    });
+  }
   db.collection('chart').findOne({
     _id: db.ObjectId(id),
     userId: String(req.user._id)
   }).then(function(item) {
     if (! item) {
       return res.json({
-        error: 'id is not valid.'
+        error: 'ID is not valid.'
       });
     }
-    chart = item;
     item.name = req.body.name;
     item.fields = req.body['fields[]'] instanceof Array ? req.body['fields[]']: [req.body['fields[]']];
+    updatedItem = item;
     return db.collection('chart').update({ _id: db.ObjectId(id), userId: String(req.user._id) }, item);
   }).then(function() {
-    return res.json(chart);
+    return res.json(updatedItem);
+  }).catch(next);
+});
+
+router.get('/events', tokenMiddleware, function(req, res, next) {
+  db.collection('events').find({ userId: String(req.user._id) }).toArray().then(function(items) {
+    res.json(items);
+  }).catch(next);
+});
+
+router.post('/events', tokenMiddleware, function(req, res, next) {
+  if (! req.body.field) {
+    return res.json({
+      error: 'Field is required.'
+    });
+  }
+  if (! req.body.minValue || ! req.body.maxValue) {
+    return res.json({
+      error: 'Min Value and Max Value are required.'
+    });
+  }
+  if (req.body.minValue > req.body.maxValue || req.body.minValue === req.body.maxValue) {
+    return res.json({
+      error: 'Min Value should be lower than Max Value.'
+    });
+  }
+  if (req.body.sendEmail === 'false' && req.body.openUrl === 'false') {
+    return res.json({
+      error: 'You should check one or more notifications method.'
+    });
+  }
+  if (req.body.openUrl === 'true' && (! req.body.url || ! validator.isURL(req.body.url))) {
+    return res.json({
+      error: 'URL is not valid.'
+    });
+  }
+  db.collection('events').insert({
+    field: req.body.field,
+    minValue: req.body.minValue,
+    maxValue: req.body.maxValue,
+    userId: String(req.user._id),
+    sendEmail: !! req.body.sendEmail,
+    openUrl: !! req.body.openUrl,
+    url: req.body.url,
+    createAt: new Date()
+  }).then(function(item) {
+    res.json(item);
+  }).catch(next);
+});
+
+router.post('/events/:id', tokenMiddleware, function(req, res, next) {
+  var id = req.params.id;
+  var updatedItem;
+  if (! req.body.field) {
+    return res.json({
+      error: 'Field is required.'
+    });
+  }
+  if (! req.body.minValue || ! req.body.maxValue) {
+    return res.json({
+      error: 'Min Value and Max Value are required.'
+    });
+  }
+  if (req.body.minValue > req.body.maxValue || req.body.minValue === req.body.maxValue) {
+    return res.json({
+      error: 'Min Value should be lower than Max Value.'
+    });
+  }
+  if (req.body.sendEmail === 'false' && req.body.openUrl === 'false') {
+    return res.json({
+      error: 'You should check one or more notifications method.'
+    });
+  }
+  if (req.body.openUrl === 'true' && (! req.body.url || ! validator.isURL(req.body.url))) {
+    return res.json({
+      error: 'URL is not valid.'
+    });
+  }
+  db.collection('events').findOne({
+    _id: db.ObjectId(id),
+    userId: String(req.user._id)
+  }).then(function(item) {
+    if (! item) {
+      return res.json({
+        error: 'ID is not valid.'
+      });
+    }
+    console.log('req.body.openUrl', Boolean(req.body.openUrl));
+    item.field = req.body.field;
+    item.minValue = req.body.minValue;
+    item.maxValue = req.body.maxValue;
+    item.sendEmail = (req.body.sendEmail === 'true');
+    item.openUrl = (req.body.openUrl === 'true');
+    item.url = req.body.url;
+    updatedItem = item;
+    return db.collection('events').update({ _id: db.ObjectId(id), userId: String(req.user._id) }, item);
+  }).then(function() {
+    return res.json(updatedItem);
   }).catch(next);
 });
 

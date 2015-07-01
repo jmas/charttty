@@ -3,3 +3,4 @@ config.json
 public/config.json
 node_modules/*
 tmp/*
+public/google*

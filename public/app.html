@@ -13,6 +13,14 @@
     #welcome-modal .modal-title {
       text-align: center;
     }
+    .events-from-items {
+
+    }
+    .events-from-item {
+      border: 1px solid #e5e5e5;
+      padding: 1em;
+      border-radius: .25em;
+    }
     </style>
   </head>
   <body>
@@ -31,6 +39,7 @@
           <ul class="nav navbar-nav">
             <li><a href="#charts" data-t>Charts</a></li>
             <li><a href="#data" data-t>Data</a></li>
+            <li><a href="#events" data-t>Events</a></li>
             <li><a href="https://github.com/jmas/iottty/wiki" data-t>Docs</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -93,12 +102,20 @@
       </div>
     </div>
 
+    <div id="events-container" class="container" data-page="events">
+      <p><button type="button" class="btn btn-default" id="events-add" data-t>Add Event</button></p>
+      <div class="panel panel-default">
+        <div class="panel-heading" data-t>Events</div>
+        <div id="events-list" class="list-group"></div>
+      </div>
+    </div>
+
     <div class="modal fade" id="chart-edit-modal" tabindex="-1" role="dialog" aria-labelledby="chart-edit-modal-label">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="chart-edit-modal-title"></h4>
+            <h4 id="chart-edit-modal-title" class="modal-title"></h4>
           </div>
           <div class="modal-body">
             <div id="chart-edit-message" class="alert alert-danger" role="alert"></div>
@@ -196,6 +213,54 @@
       </div>
     </div>
 
+    <div class="modal fade" id="events-edit-modal" tabindex="-1" role="dialog" aria-labelledby="events-edit-modal-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 id="events-edit-title" class="modal-title" data-t></h4>
+          </div>
+          <div class="modal-body">
+            <div id="events-edit-message" class="alert" role="alert"></div>
+            <form id="events-edit-form">
+              <input id="events-edit-id" type="hidden" value="" />
+              <div class="form-group">
+                <label data-t>Field</label>
+                <select id="events-field" class="form-control"></select>
+              </div>
+              <div class="form-group">
+                <label data-t>Min Value</label>
+                <input id="events-minvalue" type="number" class="form-control" placeholder="Number" data-t />
+              </div>
+              <div class="form-group">
+                <label data-t>Max Value</label>
+                <input id="events-maxvalue" type="number" class="form-control" placeholder="Number" data-t />
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input id="events-doemail" type="checkbox" value="1" /> <span data-t>Send Email</span>
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input id="events-dourl" type="checkbox" value="1" /> <span data-t>Open URL</span>
+                </label>
+              </div>
+              <div id="events-url-container" class="form-group hidden">
+                <label>URL</label>
+                <input id="events-url" class="form-control" type="text" placeholder="URL" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <div class="pull-right">
+              <button id="events-edit-save" type="button" class="btn btn-primary" data-t>Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script id="chart-item-tpl" type="template/text">
       <div class="panel panel-default" data-chart>
         <div class="panel-heading">
@@ -217,6 +282,7 @@
     <script src="javascripts/pages/charts.js"></script>
     <script src="javascripts/pages/data.js"></script>
     <script src="javascripts/pages/profile.js"></script>
+    <script src="javascripts/pages/events.js"></script>
     <script src="javascripts/bootstrap.js"></script>
 
   </body>

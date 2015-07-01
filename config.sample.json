@@ -1,3 +1,6 @@
 {
-	"dbName": "<MongoDB Data Base name>"
+	"dbName": "<MongoDB Data Base name>",
+  "gmailUser": "<Gmail SMTP User>",
+  "gmailPassword": "<Gmail SMTP Password>",
+  "gmailAddress": "<Gmail Email Address>"
 }

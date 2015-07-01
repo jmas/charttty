@@ -53,6 +53,7 @@
         }
       }
     };
+    list.setEmptyTpl('<tr><td>'+_('List is empty.')+'</td></tr>');
   }
 
   function showMessage(message, type) {

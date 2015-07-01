@@ -263,7 +263,7 @@
       hideEditChart();
       loadCharts();
     });
-    return false;  
+    return false;
   });
 
   $.subscribe('dataFieldsUpdated', function(event, items) {
@@ -290,6 +290,10 @@
 
   $.subscribe('userUpdated', function() {
     loadCharts();
+  });
+
+  $.subscribe('i18nLoaded', function() {
+    chartList.setEmptyTpl('<div class="alert alert-info">'+_('List is empty.')+'</div>');
   });
 
   // execute
