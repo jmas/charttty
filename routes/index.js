@@ -14,7 +14,8 @@ var emailServer  = emailjs.server.connect({
   user: config.smtpUser,
   password: config.smtpPassword,
   host: config.smtpHost,
-  port: config.smtpPort
+  port: config.smtpPort,
+  ssl: true
 });
 
 function dataInsertHandler(req, res, next) {
