@@ -214,8 +214,8 @@ router.post('/user', tokenMiddleware, function(req, res, next) {
       error: 'Email address is not valid.'
     });
   }
-  db.collection('user').findOne({ email: req.body.email }).then(function(user) {
-    if (user) {
+  db.collection('user').findOne({ email: req.body.email }).then(function(item) {
+    if (item) {
       return res.json({
         error: 'User is already registered.'
       });
