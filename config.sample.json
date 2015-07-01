@@ -1,6 +1,9 @@
 {
 	"dbName": "<MongoDB Data Base name>",
-  "gmailUser": "<Gmail SMTP User>",
-  "gmailPassword": "<Gmail SMTP Password>",
-  "gmailAddress": "<Gmail Email Address>"
+  "emailAddress": "<Email Address>",
+  "smtpUser": "<SMTP User>",
+  "smtpPassword": "<SMTP Password>",
+  "smtpHost": "<SMTP Host>",
+  "smtpPort": "<SMTP Port>",
+  "eventsBlackHosts": []
 }

@@ -20,6 +20,7 @@
   var editIdEl = document.getElementById('events-edit-id');
   var saveEl = document.getElementById('events-edit-save');
   var titleEl = document.getElementById('events-edit-title');
+  var removeEl = document.getElementById('events-edit-remove');
   var _ = window.i18n.t.bind(window.i18n);
 
   var list = new DataList(
@@ -47,8 +48,10 @@
     $(maxvalueEl).val(data.maxValue || 0);
     if (data._id) {
       $(titleEl).html(_('Edit Event'));
+      $(removeEl).show();
     } else {
       $(titleEl).html(_('Add Event'));
+      $(removeEl).hide();
     }
     if (! data.sendEmail) {
       doemailEl.checked = false;
@@ -142,6 +145,14 @@
     $(editMessageEl).hide();
   }
 
+  function remove() {
+    var id = String($(editIdEl).val());
+    return $.ajax({
+      url: '/events/'+id,
+      type: 'DELETE'
+    });
+  }
+
   // handlers
 
   $(addEl).on('click', function() {
@@ -190,5 +201,12 @@
     });
     return false;
   });
+
+  $(removeEl).on('click', function() {
+    remove().then(function() {
+      $(modalEl).modal('hide');
+      loadEvents();
+    });
+  })
 
 })(this);

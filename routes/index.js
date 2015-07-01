@@ -6,6 +6,16 @@ var apiKeyMiddleware = require('../middleware/apiKey');
 var validator = require('validator');
 var crypto = require('crypto');
 var dataExport = require('../helpers/dataExport');
+var config = require('../config');
+var requestify = require('requestify');
+var emailjs = require('emailjs');
+var url = require('url');
+var emailServer  = emailjs.server.connect({
+  user: config.smtpUser,
+  password: config.smtpPassword,
+  host: config.smtpHost,
+  port: config.smtpPort
+});
 
 function dataInsertHandler(req, res, next) {
   var params = req.query;
@@ -30,6 +40,9 @@ function dataInsertHandler(req, res, next) {
     res.send('OK');
   }).catch(next);
   db.collection('events').find({ userId: String(req.user._id), field: { $in: fields } }).then(function(items) {
+    if (items.length === 0) {
+      return;
+    }
     for (var i=0,fieldName,message,ln=items.length; i<ln; i++) {
       fieldName = items[i].field;
       if (validParams[fieldName] < items[i].minValue) {
@@ -39,8 +52,25 @@ function dataInsertHandler(req, res, next) {
         // field is greather than
         message = fieldName + ' is ' + validParams[fieldName] + ' > ' + items[i].minValue;
       }
+      if (items[i].sendEmail) {
+        var mailOptions = {
+          from: 'Charttty <'+config.emailAddress+'>',
+          to: req.user.email,
+          subject: 'Charttty: ' + message,
+          text: message
+        };
+        emailServer.send(mailOptions, function(error, info){
+          if(error){
+            return console.log(error);
+          }
+          console.log('Message sent: ', info);
+        });
+      }
+      if (items[i].openUrl && validator.isURL(items[i].url)) {
+        requestify.get(items[i].url, validParams);
+      }
     }
-  });
+  }).catch(next);
 }
 
 function dataGetHandler(req, res, next) {
@@ -371,7 +401,7 @@ router.post('/events', tokenMiddleware, function(req, res, next) {
       error: 'You should check one or more notifications method.'
     });
   }
-  if (req.body.openUrl === 'true' && (! req.body.url || ! validator.isURL(req.body.url))) {
+  if (req.body.openUrl === 'true' && (! req.body.url || ! validator.isURL(req.body.url) || config.eventsBlackHosts.indexOf(url.parse(req.body.url).hostname) !== -1)) {
     return res.json({
       error: 'URL is not valid.'
     });
@@ -413,7 +443,7 @@ router.post('/events/:id', tokenMiddleware, function(req, res, next) {
       error: 'You should check one or more notifications method.'
     });
   }
-  if (req.body.openUrl === 'true' && (! req.body.url || ! validator.isURL(req.body.url))) {
+  if (req.body.openUrl === 'true' && (! req.body.url || ! validator.isURL(req.body.url) || config.eventsBlackHosts.indexOf(url.parse(req.body.url).hostname) !== -1)) {
     return res.json({
       error: 'URL is not valid.'
     });
@@ -438,6 +468,12 @@ router.post('/events/:id', tokenMiddleware, function(req, res, next) {
     return db.collection('events').update({ _id: db.ObjectId(id), userId: String(req.user._id) }, item);
   }).then(function() {
     return res.json(updatedItem);
+  }).catch(next);
+});
+
+router.delete('/events/:id', tokenMiddleware, function(req, res, next) {
+  db.collection('events').remove({ _id: db.ObjectId(req.params.id), userId: String(req.user._id) }, { justOne: true }).then(function(item) {
+    res.json({ success: true });
   }).catch(next);
 });
 
