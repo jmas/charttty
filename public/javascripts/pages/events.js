@@ -203,6 +203,9 @@
   });
 
   $(removeEl).on('click', function() {
+    if (! confirm(_('Are you sure?'))) {
+      return false;
+    }
     remove().then(function() {
       $(modalEl).modal('hide');
       loadEvents();
