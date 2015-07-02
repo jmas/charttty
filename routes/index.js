@@ -389,17 +389,19 @@ router.get('/events', tokenMiddleware, function(req, res, next) {
 });
 
 router.post('/events', tokenMiddleware, function(req, res, next) {
+  var minValue = Number(req.body.minValue);
+  var maxValue = Number(req.body.maxValue);
   if (! req.body.field) {
     return res.json({
       error: 'Field is required.'
     });
   }
-  if (! req.body.minValue || ! req.body.maxValue) {
+  if (isNaN(minValue) || isNaN(maxValue)) {
     return res.json({
-      error: 'Min Value and Max Value are required.'
+      error: 'Min Value and Max Value should be valid numbers.'
     });
   }
-  if (req.body.minValue > req.body.maxValue || req.body.minValue === req.body.maxValue) {
+  if (minValue > maxValue || minValue === maxValue) {
     return res.json({
       error: 'Min Value should be lower than Max Value.'
     });
@@ -416,8 +418,8 @@ router.post('/events', tokenMiddleware, function(req, res, next) {
   }
   db.collection('events').insert({
     field: req.body.field,
-    minValue: req.body.minValue,
-    maxValue: req.body.maxValue,
+    minValue: minValue,
+    maxValue: maxValue,
     userId: String(req.user._id),
     sendEmail: !! req.body.sendEmail,
     openUrl: !! req.body.openUrl,

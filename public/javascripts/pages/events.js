@@ -92,13 +92,13 @@
     hideEditMessage();
     var id = String($(editIdEl).val());
     var field = $(fieldEl).find('option:selected').val();
-    var minValue = $(minvalueEl).val();
-    var maxValue = $(maxvalueEl).val();
+    var minValue = Number($(minvalueEl).val());
+    var maxValue = Number($(maxvalueEl).val());
     var sendEmail = !! $(doemailEl).prop('checked');
     var openUrl = !! $(dourlEl).prop('checked');
     var url = String($(urlEl).val());
-    if (! minValue || ! maxValue) {
-      showEditMessage(_('Min Value and Max Value are required.'), 'danger');
+    if (isNaN(minValue) || isNaN(maxValue)) {
+      showEditMessage(_('Min Value and Max Value should be valid numbers.'), 'danger');
       return {then: function() {}};
     }
     if (minValue > maxValue || minValue === maxValue) {
