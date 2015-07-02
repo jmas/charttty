@@ -18,5 +18,6 @@ You can do with Charttty:
 - [x] You can create many charts on one page and see live data
 - [x] You can use English, Ukrainian and Russian language or can add yours translation
 - [x] You can export all collected data into Excel file
+- [x] You can setup events for sending notifications by Email or execute different URL address
 
 MIT license.
